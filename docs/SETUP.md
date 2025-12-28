@@ -25,7 +25,7 @@ Clone / Pull → Checkout branch → Create & activate venv → Install deps →
 
 ## 🔹 STEP 1: CLONE THE REPOSITORY (ONE TIME ONLY)
 ```cmd
-git clone https://github.com/<your-org>/unsaid-ai.git
+git clone https://github.com/lalith-thexplorer/unsaid-ai.git
 cd unsaid-ai
 ```
 
@@ -165,3 +165,4 @@ If you encounter issues, reach out in the whatsapp group with:
 ---
 
 **Happy coding! 🚀**
+
