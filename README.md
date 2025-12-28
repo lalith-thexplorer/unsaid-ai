@@ -20,7 +20,7 @@ Existing solutions often feel **clinical, intrusive, or overwhelming**.
 
 **Unsaid lowers the barrier to expression** by offering a calm, anonymous, and supportive space — focused on **listening, not fixing**.
 
----
+
 
 ## ✨ Key Features
 
@@ -42,7 +42,6 @@ Existing solutions often feel **clinical, intrusive, or overwhelming**.
 - 📄 **Reflection Export**  
   Shareable summary for personal or professional use  
 
----
 
 ## 🛠️ Tech Stack
 
@@ -52,7 +51,6 @@ Existing solutions often feel **clinical, intrusive, or overwhelming**.
 - **Export:** FPDF / HTML  
 - **Storage:** Local session state (privacy-first)  
 
----
 
 ## 🚀 Getting Started (Local Setup)
 
@@ -68,3 +66,31 @@ python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 streamlit run app.py
+```
+
+The app will run locally in your browser.
+
+
+## 📁 Project Documentation
+Detailed planning and execution docs are available in the `docs/` folder:
+
+* **PRD.md** – Complete product requirements
+* **TASKS.md** – Team task allocation
+* **SETUP.md** – Developer onboarding guide
+* **SCREEN_FLOW.md** – App navigation flow
+* **UI_GUIDELINES.md** – Dark + glass UI standards
+
+## ⚠️ Disclaimer
+**Unsaid provides emotional support only.**
+
+* It does not offer medical advice, diagnosis, or treatment.
+* In crisis situations, users are encouraged to seek professional help.
+
+
+## 👥 Team
+Built by a collaborative student team as part of a hackathon project.
+
+## 🌱 Project Status
+### 🚧 Actively under development
+*Built with empathy, clarity, and intention.*
+
