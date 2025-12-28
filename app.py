@@ -19,11 +19,8 @@ st.set_page_config(
 )
 
 # -------------------------------
-# Sidebar Navigation (DEV ONLY)
+# Screen Registry
 # -------------------------------
-st.sidebar.title("🧭 Unsaid Navigation")
-st.sidebar.caption("Development Navigation")
-
 SCREEN_MAP = {
     "Onboarding": onboarding_screen,
     "Mood Check-In": mood_checkin_screen,
@@ -33,15 +30,42 @@ SCREEN_MAP = {
     "Reflection Export": export_screen,
 }
 
+SCREEN_KEYS = list(SCREEN_MAP.keys())
+
+# -------------------------------
+# Navigation State (SOURCE OF TRUTH)
+# -------------------------------
+if "current_screen" not in st.session_state:
+    st.session_state.current_screen = "Onboarding"
+
+# -------------------------------
+# Sidebar Navigation (DEV ONLY)
+# -------------------------------
+st.sidebar.title("🧭 Unsaid Navigation")
+st.sidebar.caption("Development Navigation")
+
+# Safe index resolution (prevents ValueError)
+current_index = (
+    SCREEN_KEYS.index(st.session_state.current_screen)
+    if st.session_state.current_screen in SCREEN_KEYS
+    else 0
+)
+
 selected_screen = st.sidebar.radio(
     "Go to screen:",
-    list(SCREEN_MAP.keys()),
+    SCREEN_KEYS,
+    index=current_index,
 )
+
+# Sync sidebar → app navigation
+if selected_screen != st.session_state.current_screen:
+    st.session_state.current_screen = selected_screen
+    st.rerun()
 
 # -------------------------------
 # Main Screen Renderer
 # -------------------------------
-SCREEN_MAP[selected_screen]()
+SCREEN_MAP[st.session_state.current_screen]()
 
 # -------------------------------
 # Global Footer Disclaimer
