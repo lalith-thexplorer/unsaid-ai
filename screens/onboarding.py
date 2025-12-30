@@ -3,28 +3,88 @@ import streamlit as st
 def render():
     st.markdown("""
     <style>
-        /* ✅ Updated: richer, more aesthetic multi-layer gradient (still dark + calm) */
-        [data-testid="stAppViewContainer"] {
-            background:
-  radial-gradient(900px 600px at 12% 18%, rgba(99,102,241,0.22) 0%, rgba(99,102,241,0.00) 60%),
-  radial-gradient(850px 520px at 88% 22%, rgba(124,58,237,0.18) 0%, rgba(124,58,237,0.00) 58%),
-  radial-gradient(900px 520px at 40% 88%, rgba(16,185,129,0.10) 0%, rgba(16,185,129,0.00) 60%),
-  radial-gradient(820px 520px at 78% 78%, rgba(59,130,246,0.10) 0%, rgba(59,130,246,0.00) 55%),
-  linear-gradient(135deg, #070612 0%, #0d0a1f 22%, #1a0f2e 48%, #24124c 72%, #120f2a 100%);
+        /* Sparkling, multi-color dark background (calm + premium) */
+        [data-testid="stAppViewContainer"]{
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
 
+            /* Base: deep dark gradient */
+            background:
+              radial-gradient(1000px 700px at 18% 12%, rgba(99,102,241,0.24) 0%, rgba(99,102,241,0.00) 60%),
+              radial-gradient(950px 650px at 82% 18%, rgba(124,58,237,0.20) 0%, rgba(124,58,237,0.00) 58%),
+              radial-gradient(900px 650px at 45% 88%, rgba(16,185,129,0.10) 0%, rgba(16,185,129,0.00) 60%),
+              radial-gradient(900px 650px at 86% 82%, rgba(59,130,246,0.10) 0%, rgba(59,130,246,0.00) 58%),
+              linear-gradient(135deg, #060511 0%, #0b0920 25%, #170c2c 50%, #24124c 75%, #0c0a18 100%);
         }
 
-        /* MINIMAL 6 breathing bubbles */
+        /* --- Sparkle layer (soft bokeh dots) --- */
+        [data-testid="stAppViewContainer"]::before{
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.55;
+            filter: blur(0.2px);
+
+            /* multiple tiny radial “lights” */
+            background:
+              radial-gradient(4px 4px at 12% 22%, rgba(255, 99, 132, 0.22) 0%, rgba(255, 99, 132, 0) 70%),
+              radial-gradient(3px 3px at 20% 68%, rgba(99, 102, 241, 0.22) 0%, rgba(99, 102, 241, 0) 70%),
+              radial-gradient(4px 4px at 32% 35%, rgba(34, 211, 238, 0.18) 0%, rgba(34, 211, 238, 0) 70%),
+              radial-gradient(3px 3px at 48% 80%, rgba(16, 185, 129, 0.18) 0%, rgba(16, 185, 129, 0) 70%),
+              radial-gradient(4px 4px at 62% 28%, rgba(168, 85, 247, 0.20) 0%, rgba(168, 85, 247, 0) 70%),
+              radial-gradient(3px 3px at 74% 56%, rgba(251, 191, 36, 0.16) 0%, rgba(251, 191, 36, 0) 70%),
+              radial-gradient(4px 4px at 88% 30%, rgba(59, 130, 246, 0.18) 0%, rgba(59, 130, 246, 0) 70%),
+              radial-gradient(3px 3px at 86% 78%, rgba(244, 114, 182, 0.18) 0%, rgba(244, 114, 182, 0) 70%);
+            animation: sparkleDrift 18s ease-in-out infinite;
+        }
+
+        /* --- Vignette + subtle grain for premium feel --- */
+        [data-testid="stAppViewContainer"]::after{
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+
+            background:
+              radial-gradient(1200px 750px at 50% 45%,
+                rgba(0,0,0,0.00) 0%,
+                rgba(0,0,0,0.22) 55%,
+                rgba(0,0,0,0.55) 100%),
+              repeating-radial-gradient(circle at 18% 26%,
+                rgba(255,255,255,0.05) 0px,
+                rgba(255,255,255,0.00) 2px,
+                rgba(0,0,0,0.00) 6px);
+            opacity: 0.18;
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes sparkleDrift {
+            0%   { transform: translate3d(0,0,0) scale(1); opacity: 0.45; }
+            50%  { transform: translate3d(10px,-8px,0) scale(1.03); opacity: 0.65; }
+            100% { transform: translate3d(0,0,0) scale(1); opacity: 0.45; }
+        }
+
+        /* Accessibility: if user prefers reduced motion, stop animations */
+        @media (prefers-reduced-motion: reduce) {
+            [data-testid="stAppViewContainer"]::before {
+                animation: none !important;
+            }
+        }
+
+        /* MINIMAL 6 breathing bubbles (your existing) */
         .bubble-breath {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle,
-                rgba(99,102,241,0.12) 0%,
-                rgba(16,185,129,0.08) 70%,
-                transparent 100%);
+            background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, rgba(16,185,129,0.08) 70%, transparent 100%);
             border: 1px solid rgba(99,102,241,0.06);
             animation: breathLight 9s ease-in-out infinite;
             box-shadow: 0 0 12px rgba(99,102,241,0.08);
+            z-index: 1;
+            pointer-events: none;
         }
         @keyframes breathLight {
             0%, 100% { transform: scale(1); opacity: 0.4; }
@@ -41,7 +101,12 @@ def render():
             padding: 3rem 2.5rem;
             max-width: 520px;
             margin: 2rem auto;
-            box-shadow: 0 28px 56px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 10;
+            box-shadow:
+              0 28px 56px rgba(0,0,0,0.55),
+              0 0 0 1px rgba(99,102,241,0.10) inset,
+              0 0 40px rgba(124,58,237,0.10);
         }
 
         .hero-calm {
@@ -98,27 +163,10 @@ def render():
             margin-top: 1rem;
             min-height: 1.5rem;
         }
-
-        .btn-serene {
-            background: linear-gradient(135deg, #6366f1, #7c3aed);
-            border: none;
-            border-radius: 20px;
-            padding: 1.2rem 3rem;
-            font-size: 1.15rem;
-            font-weight: 500;
-            color: white;
-            width: 100%;
-            box-shadow: 0 12px 32px rgba(99,102,241,0.30);
-            transition: all 0.3s ease;
-        }
-        .btn-serene:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 18px 40px rgba(99,102,241,0.40);
-        }
     </style>
     """, unsafe_allow_html=True)
 
-    # 6 bubbles (keep your exact positions)
+    # Your 6 bubbles (unchanged positions)
     st.markdown("""
     <div class="bubble-breath" style="left:15%; top:20%; width:28px; height:28px; animation-delay:0s;"></div>
     <div class="bubble-breath" style="left:75%; top:25%; width:24px; height:24px; animation-delay:2s;"></div>
@@ -128,31 +176,26 @@ def render():
     <div class="bubble-breath" style="left:10%; bottom:60%; width:27px; height:27px; animation-delay:5s;"></div>
     """, unsafe_allow_html=True)
 
-    # Main card
     st.markdown('<div class="sanctuary-glass">', unsafe_allow_html=True)
 
     st.markdown('<h1 class="hero-calm">Unsaid</h1>', unsafe_allow_html=True)
     st.markdown(
         '<p style="color:#cbd5e1; font-size:1.2rem; text-align:center; margin-bottom:2.5rem; line-height:1.6; font-weight:400;">'
-        'A space for what you can&#x27;t say out loud.'
-        '</p>',
-        unsafe_allow_html=True
+        "A space for what you can't say out loud."
+        '</p>', unsafe_allow_html=True
     )
 
-    # Mood badges (same layout as your current code)
     col1, col2, col3 = st.columns(3)
     moods = ["😔", "😟", "😰", "😐", "😊", "🥰"]
     for i, mood in enumerate(moods):
         with (col1, col2, col3)[i % 3]:
             st.markdown(f'<div class="mood-serene">{mood}</div>', unsafe_allow_html=True)
 
-    # Breathing guide
     st.markdown('<div class="breath-guide">', unsafe_allow_html=True)
     st.markdown('<div class="breath-circle"></div>', unsafe_allow_html=True)
     st.markdown('<div class="breath-text">🫁 Breathe In... → 💨 Out... → 😌 Rest</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Disclaimer
     st.markdown(
         '<div style="text-align:center; color:#94a3b8; font-size:0.92rem; margin:2.5rem 0; line-height:1.6;">'
         '🛡️ Unsaid provides emotional support only and does not offer medical advice or diagnosis.'
@@ -160,7 +203,6 @@ def render():
         unsafe_allow_html=True
     )
 
-    # Trusted contact
     trusted_contact = st.text_input(
         "Trusted contact (optional)",
         placeholder="Email/phone for crisis support only",
@@ -173,9 +215,8 @@ def render():
         st.session_state.page = "mood_checkin"
         st.rerun()
 
-    st.markdown('</div>', unsafe_allow_html=True)  # sanctuary-glass
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    # Footer
     st.markdown(
         '<div style="text-align:center; color:#64748b; font-size:0.85rem; margin-top:3rem; padding-top:2rem; border-top:1px solid rgba(71,71,99,0.3);">'
         '💾 Everything stays private on your device'
